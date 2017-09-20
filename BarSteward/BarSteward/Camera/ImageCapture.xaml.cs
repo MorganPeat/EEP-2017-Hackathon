@@ -28,43 +28,44 @@ namespace BarSteward.Camera
 
             //framerate of 10fps
             _timer = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(100)};
-            _timer.Tick += async (object s, EventArgs a) =>
-            {
-                //draw the image obtained from camera
-                using (Mat frame = _capture.QueryFrame())
-                {
-                    if (frame != null)
-                    {
-                        using (Image<Bgr, byte> image = frame.ToImage<Bgr, byte>())
-                        {
-                            CurrentFrame = image.ToBitmap();
-                        }
-                    }
-                }
-            };
+            _timer.Tick += async (object s, EventArgs a) => { CurrentFrame = ConvertToBitmapImage(Capture()); };
             _timer.Start();
             DataContext = this;
         }
 
+        public Bitmap Capture()
+        {
+            //draw the image obtained from camera
+            using (Mat frame = _capture.QueryFrame())
+            {
+                if (frame != null)
+                {
+                    using (Image<Bgr, byte> image = frame.ToImage<Bgr, byte>())
+                    {
+                        return image.ToBitmap();
+                    }
+                }
+            }
 
-        private Bitmap _currentFrame;
+            return null;
+        }
 
-        public Bitmap CurrentFrame
+
+        private BitmapImage _currentFrame;
+
+        public BitmapImage CurrentFrame
         {
             get => _currentFrame;
             private set
             {
                 if (_currentFrame != value)
                 {
-                    _currentFrame?.Dispose();
                     _currentFrame = value;
                     OnPropertyChanged();
-                    OnPropertyChanged("BitmapImage");
                 }
             }
         }
 
-        public BitmapImage BitmapImage => Convert(CurrentFrame);
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -73,7 +74,7 @@ namespace BarSteward.Camera
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private BitmapImage Convert(Bitmap bitmap)
+        private static BitmapImage ConvertToBitmapImage(Bitmap bitmap)
         {
             if (bitmap == null) return null;
 
