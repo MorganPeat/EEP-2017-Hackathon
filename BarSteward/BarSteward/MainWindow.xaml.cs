@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿using System.Drawing;
+using System.IO;
+using System.Windows;
+using BarSteward.Services;
 
 namespace BarSteward
 {
@@ -14,5 +17,12 @@ namespace BarSteward
             this.DataContext = this;
         }
         
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            Bitmap bitmap = camera.Capture();
+            string base64 = Encode.Base64Encode(bitmap);
+            File.WriteAllText(@"c:\image.txt", base64);
+        }
     }
 }

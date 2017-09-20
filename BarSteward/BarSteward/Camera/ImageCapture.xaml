@@ -9,9 +9,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Image x:Name="imageCtrl" Grid.Row="0" Source="{Binding CurrentFrame,UpdateSourceTrigger=PropertyChanged}"/>
-        <Label Grid.Row="1" Content="Hello World" />
     </Grid>
 </UserControl>
