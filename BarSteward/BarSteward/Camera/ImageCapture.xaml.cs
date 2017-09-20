@@ -22,7 +22,7 @@ namespace BarSteward.Camera
             InitializeComponent();
 
             _capture = new VideoCapture();
-
+            
             //framerate of 10fps
             _timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(100) };
             _timer.Tick += async (object s, EventArgs a) =>
@@ -32,14 +32,17 @@ namespace BarSteward.Camera
                 {
                     if (frame != null)
                     {
-                        Image<Bgr, byte> image = frame.ToImage<Bgr, byte>();
-                        CurrentFrame = image.ToBitmap();
+                        using (Image<Bgr, byte> image = frame.ToImage<Bgr, byte>())
+                        {
+                            CurrentFrame = image.ToBitmap();
+                        }
                     }
                 }
             };
             _timer.Start();
         }
 
+        
         private Bitmap _currentFrame;
         public Bitmap CurrentFrame
         {
@@ -48,6 +51,7 @@ namespace BarSteward.Camera
             {
                 if (_currentFrame != value)
                 {
+                    _currentFrame?.Dispose();
                     _currentFrame = value;
                     OnPropertyChanged();
                 }

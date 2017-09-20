@@ -8,8 +8,10 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-
-        <Camera:ImageCapture/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Camera:ImageCapture Grid.Row="0"/>
 
     </Grid>
 </Window>
