@@ -6,12 +6,13 @@
         xmlns:local="clr-namespace:BarSteward"
         xmlns:Camera="clr-namespace:BarSteward.Camera" x:Class="BarSteward.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="350" Width="525"
+    DataContext="this">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Camera:ImageCapture Grid.Row="0"/>
+        <Image x:Name="imageCtrl" Grid.Row="0" Source="{Binding CurrentFrame,UpdateSourceTrigger=PropertyChanged}"/>
 
     </Grid>
 </Window>
