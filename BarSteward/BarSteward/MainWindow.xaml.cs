@@ -36,23 +36,25 @@ namespace BarSteward
                     {
                         using (Image<Bgr, byte> image = frame.ToImage<Bgr, byte>())
                         {
-                            CurrentFrame = image.ToBitmap();
-                            imageCtrl.Source = Convert(CurrentFrame);
+                            CurrentFrame = Convert( image.ToBitmap());
+                            //imageCtrl.Source = Convert(CurrentFrame);
                         }
                     }
                 }
             };
             _timer.Start();
+
+            this.DataContext = this;
         }
-        private Bitmap _currentFrame;
-        public Bitmap CurrentFrame
+        private BitmapSource _currentFrame;
+        public BitmapSource CurrentFrame
         {
             get => _currentFrame;
             private set
             {
                 if (_currentFrame != value)
                 {
-                    _currentFrame?.Dispose();
+                    //_currentFrame?.Dispose();
                     _currentFrame = value;
                     OnPropertyChanged();
                 }

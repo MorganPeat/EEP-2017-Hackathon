@@ -5,13 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BarSteward.Camera"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" DataContext="this">
+             d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Image x:Name="imageCtrl" Grid.Row="0" Source="{Binding CurrentFrame,UpdateSourceTrigger=PropertyChanged}"/>
+        <Image x:Name="imageCtrl" Grid.Row="0" Source="{Binding BitmapImage,UpdateSourceTrigger=PropertyChanged}"/>
         <Label Grid.Row="1" Content="Hello World" />
     </Grid>
 </UserControl>

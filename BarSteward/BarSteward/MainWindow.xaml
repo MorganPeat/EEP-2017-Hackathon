@@ -12,7 +12,8 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Image x:Name="imageCtrl" Grid.Row="0" Source="{Binding CurrentFrame,UpdateSourceTrigger=PropertyChanged}"/>
-
+        <!--<Image x:Name="imageCtrl" Grid.Row="0" Source="{Binding CurrentFrame,UpdateSourceTrigger=PropertyChanged}"/>-->
+        
+<Camera:ImageCapture Grid.Row="0"/>
     </Grid>
 </Window>

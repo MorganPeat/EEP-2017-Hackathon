@@ -4,7 +4,10 @@ using System.Windows.Controls;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Runtime.CompilerServices;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
 namespace BarSteward.Camera
@@ -22,9 +25,9 @@ namespace BarSteward.Camera
             InitializeComponent();
 
             _capture = new VideoCapture();
-            
+
             //framerate of 10fps
-            _timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(100) };
+            _timer = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(100)};
             _timer.Tick += async (object s, EventArgs a) =>
             {
                 //draw the image obtained from camera
@@ -40,10 +43,12 @@ namespace BarSteward.Camera
                 }
             };
             _timer.Start();
+            DataContext = this;
         }
 
-        
+
         private Bitmap _currentFrame;
+
         public Bitmap CurrentFrame
         {
             get => _currentFrame;
@@ -54,16 +59,37 @@ namespace BarSteward.Camera
                     _currentFrame?.Dispose();
                     _currentFrame = value;
                     OnPropertyChanged();
+                    OnPropertyChanged("BitmapImage");
                 }
             }
         }
 
+        public BitmapImage BitmapImage => Convert(CurrentFrame);
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private BitmapImage Convert(Bitmap bitmap)
+        {
+            if (bitmap == null) return null;
+
+            using (MemoryStream memory = new MemoryStream())
+            {
+                bitmap.Save(memory, ImageFormat.Bmp);
+                memory.Position = 0;
+
+                BitmapImage bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.StreamSource = memory;
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.EndInit();
+
+                return bitmapImage;
+            }
         }
     }
 }
